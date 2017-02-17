@@ -1,7 +1,7 @@
 #include "genresult.cuh"
 #include <sys/time.h>
 
-__global__ void getMulAtomic_kernel(int nz, int *rIndices, int *column_indices, float *values, int M, int N, float *vector, float *result){
+__global__ void getMulAtomic_kernel(int nz, int *rIndices, int *cIndices, float *values, int M, int N, float *vector, float *result){
     
     int thread_id = threadIdx.x + (blockIdx.x *blockDim.x);
     int total_number_of_threads = blockDim.x * gridDim.x;
