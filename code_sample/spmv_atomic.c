@@ -68,7 +68,7 @@ void getMulAtomic(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
     clock_gettime(CLOCK_MONOTONIC_RAW, &start);
     /*Invoke kernels...*/
 
-    getMulAtomic_kernel<<<blockSize,blockNum>>>(d_nz,d_rIndices,d_cIndices,d_M,d_N,d_vector,d_result);
+    getMulAtomic_kernel<<<blockSize,blockNum>>>(d_nz,d_rIndices,d_cIndices,d_values,d_M,d_N,d_vector,d_result);
     
     cudaDeviceSynchronize();
     clock_gettime(CLOCK_MONOTONIC_RAW, &end);
