@@ -33,33 +33,24 @@ void getMulAtomic(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
     float *result = res->val;
     
     /* Device copies of the required values */
-    int   *d_nz;
     int   * d_rIndices;
     int   * d_cIndices;
     float *d_values;
-    int   *d_M;
-    int   *d_N;
     float *d_vector;
     float *d_result;
     
     
     /* Allocate values for the device copies */
-    cudaMalloc((void**)&d_nz, sizeof(int) );
     cudaMalloc((void**)&d_rIndices, sizeof(int)*number_of_non_zeros);
     cudaMalloc((void**)&d_cIndices, sizeof(int)*number_of_non_zeros);
     cudaMalloc((void**)&d_values, sizeof(float)*number_of_non_zeros);
-    cudaMalloc((void**)&d_M, sizeof(int));
-    cudaMalloc((void**)&d_N, sizeof(int));
     cudaMalloc((void**)&d_vector, sizeof(float)*N);
     cudaMalloc((void**)&d_result, sizeof(float)*M);
     
     /* Copying values from host to device */
-    cudaMemcpy(d_nz,&number_of_non_zeros,sizeof(int), cudaMemcpyHostToDevice);
     cudaMemcpy(d_rIndices,row_indices,sizeof(int)*number_of_non_zeros, cudaMemcpyHostToDevice);
     cudaMemcpy(d_cIndices,column_indices, sizeof(int)*number_of_non_zeros , cudaMemcpyHostToDevice);
     cudaMemcpy(d_values,values, sizeof(float)*number_of_non_zeros,cudaMemcpyHostToDevice);
-    cudaMemcpy(d_M,&M,sizeof(int), cudaMemcpyHostToDevice);
-    cudaMemcpy(d_N,&N,sizeof(int), cudaMemcpyHostToDevice);
     cudaMemcpy(d_vector,vector, sizeof(float)*N, cudaMemcpyHostToDevice);
     cudaMemcpy(d_result,result, sizeof(float)*M, cudaMemcpyHostToDevice);
     
@@ -68,7 +59,7 @@ void getMulAtomic(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
     clock_gettime(CLOCK_MONOTONIC_RAW, &start);
     /*Invoke kernels...*/
 
-    getMulAtomic_kernel<<<blockSize,blockNum>>>(d_nz,d_rIndices,d_cIndices,d_values,d_M,d_N,d_vector,d_result);
+    getMulAtomic_kernel<<<blockSize,blockNum>>>(number_of_non_zeros,d_rIndices,d_cIndices,d_values,M,N,d_vector,d_result);
     
     cudaDeviceSynchronize();
     clock_gettime(CLOCK_MONOTONIC_RAW, &end);
@@ -78,12 +69,9 @@ void getMulAtomic(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
     res->val = result;
     
     /*Deallocate.*/
-    cudaFree(d_nz);
     cudaFree(d_rIndices);
     cudaFree(d_cIndices);
     cudaFree(d_values);
-    cudaFree(d_M);
-    cudaFree(d_N);
     cudaFree(d_vector);
     cudaFree(d_result);
 }
