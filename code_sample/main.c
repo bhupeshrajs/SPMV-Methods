@@ -66,6 +66,12 @@ int doSpmv(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, AlgType how, in
     }
 }
 
+/*
+int sequentialExecutionCheck( MatrixInfo *mat, MatrixInfo *vec , MatrixInfo *product , MatrixInfo *sequential) {
+    int M = mat->M;
+    float * sequential_values = malloc(sizeof(float)*M);
+}
+*/
 int main(int argc, char ** argv){
     if(argc != 11){
         logError(NULL, NULL);
@@ -152,7 +158,11 @@ int main(int argc, char ** argv){
         printf("\x1b[31m%s\x1b[0m\n", cudaGetErrorString(err));
         logError(NULL, "Failed to produce output");
     }
-
+/*
+    MatrixInfo * sequential = initMatrixResult(matrix->M , blockSize);
+    sequentialExecutionCheck(matrix, vector, product, sequential);
+    writeVect(sequential, "output_sequential.txt")
+  */  
     freeMatrixInfo(matrix);
     freeMatrixInfo(vector);
     freeMatrixInfo(product);

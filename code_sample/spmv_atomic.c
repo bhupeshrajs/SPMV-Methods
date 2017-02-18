@@ -58,7 +58,6 @@ void getMulAtomic(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
     cudaMemcpy(d_cIndices,column_indices, sizeof(int)*number_of_non_zeros , cudaMemcpyHostToDevice);
     cudaMemcpy(d_values,values, sizeof(float)*number_of_non_zeros,cudaMemcpyHostToDevice);
     cudaMemcpy(d_vector,vector, sizeof(float)*N, cudaMemcpyHostToDevice);
-    cudaMemcpy(d_result,result, sizeof(float)*M, cudaMemcpyHostToDevice);
     
 		/* Sample timing code */
     struct timespec start, end;
