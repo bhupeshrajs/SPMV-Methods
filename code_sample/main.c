@@ -66,12 +66,44 @@ int doSpmv(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, AlgType how, in
     }
 }
 
-/*
+
 int sequentialExecutionCheck( MatrixInfo *mat, MatrixInfo *vec , MatrixInfo *product , MatrixInfo *sequential) {
     int M = mat->M;
-    float * sequential_values = malloc(sizeof(float)*M);
+    int *row_indices = mat->rIndex;
+    int *column_indices = mat->cIndex;
+    float *A = mat->val;
+    float *x = vec->val;
+    float * y = malloc(sizeof(float)*M);
+    memset(y,0,sizeof(float)*M);
+    
+    float *calculated_y = product->val;
+    
+    int nz = mat->nz;
+    
+    for( int i = 0 ; i < nz ; i++ ) {
+        int row = row_indices[i];
+        int column = column_indices[i];
+        float multiplication_value = A[i]*x[column];
+        y[row] += multiplication_value;
+    }
+    
+    int wrong = 0;
+    for( int i = 0 ; i < M ; i++ ) {
+        if( abs(y[i]-calculated_y[i]) > 0.000001 ) {
+            wrong = 1;
+            printf("\nThe calculated value %f, the actual value %f ",calculated_y[i],y[i]);
+        }
+    }
+    
+    if( wrong == 1 ) {
+        printf("\nDisagreements");
+    }
+    else {
+        printf("\nEverything is within the acceptable tolerance. Good Job");
+    }
+    
 }
-*/
+
 int main(int argc, char ** argv){
     if(argc != 11){
         logError(NULL, NULL);
@@ -158,11 +190,11 @@ int main(int argc, char ** argv){
         printf("\x1b[31m%s\x1b[0m\n", cudaGetErrorString(err));
         logError(NULL, "Failed to produce output");
     }
-/*
+
     MatrixInfo * sequential = initMatrixResult(matrix->M , blockSize);
     sequentialExecutionCheck(matrix, vector, product, sequential);
-    writeVect(sequential, "output_sequential.txt")
-  */  
+    writeVect(sequential, "output_sequential.txt");
+ 
     freeMatrixInfo(matrix);
     freeMatrixInfo(vector);
     freeMatrixInfo(product);

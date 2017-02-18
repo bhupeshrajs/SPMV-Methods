@@ -13,7 +13,7 @@ __global__ void getMulAtomic_kernel(int nz, int *rIndices, int *cIndices, float 
             float data = values[data_id];
             int row = rIndices[data_id];
             int column = cIndices[data_id];
-            double multiplication_value = data * vector[column];
+            float multiplication_value = data * vector[column];
             atomicAdd(&result[row],multiplication_value);
         }
     }
