@@ -99,7 +99,7 @@ int sequentialExecutionCheck( MatrixInfo *mat, MatrixInfo *vec , MatrixInfo *pro
         printf("\n %d Disagreements\n",wrong);
     }
     else {
-        printf("\nEverything is within the acceptable tolerance. Good Job");
+        printf("\nEverything is within the acceptable tolerance. Good Job\n");
     }
     
     sequential->val = y;
