@@ -13,7 +13,7 @@ def get_diff(x, y):
     den = 1 if float(y) == 0 else abs(float(y))
     return abs(float(x) - float(y))/den
         
-TOLERANCE = 10 ** -12
+TOLERANCE = 10 ** -2
 
 if len(sys.argv) < 6 or len(sys.argv) > 8:
     print("Usage: python3 tester.py [your executable (ie. ./spmv)] [matrix file] [vector file] [blocksize] [blocknum] [alg=atomic] [tester=spmv_test]")
