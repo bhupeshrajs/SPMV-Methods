@@ -33,7 +33,7 @@ void getMulAtomic(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
     float *result = res->val;
     
     printf("\nGPU Code");
-    printf("\nBlock Size : %lu, Number of Blocks : %lu, nz : %lu",blockSize,blockNum,number_of_non_zeros);
+    printf("\nBlock Size : %lu, Number of Blocks : %lu, nz : %lu\n",blockSize,blockNum,number_of_non_zeros);
     
     /* Device copies of the required values */
     int   * d_rIndices;

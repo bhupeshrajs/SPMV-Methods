@@ -89,14 +89,14 @@ int sequentialExecutionCheck( MatrixInfo *mat, MatrixInfo *vec , MatrixInfo *pro
     
     int wrong = 0;
     for( int i = 0 ; i < M ; i++ ) {
-        if( abs(y[i]-calculated_y[i]) > 0.000001 ) {
-            wrong = 1;
+        if( abs(y[i]-calculated_y[i]) > 0.01 ) {
+            wrong += 1;
             printf("\nThe calculated value %f, the actual value %f ",calculated_y[i],y[i]);
         }
     }
     
     if( wrong == 1 ) {
-        printf("\nDisagreements");
+        printf("\n %d Disagreements\n",wrong);
     }
     else {
         printf("\nEverything is within the acceptable tolerance. Good Job");
