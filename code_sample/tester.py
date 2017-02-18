@@ -46,6 +46,7 @@ try:
             if len(diff) == 0: 
                 print("Everything agreed within " + str(TOLERANCE * 100) + "%, so good on you!")
             else:
+                print(diff)
                 print("Disagreements!")
                 print("\n".join("You got {0}, we got {1}, on line {2}".format(i) for i in diff))
     #their and our are implicitly closed here...
