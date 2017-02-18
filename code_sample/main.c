@@ -73,7 +73,7 @@ int sequentialExecutionCheck( MatrixInfo *mat, MatrixInfo *vec , MatrixInfo *pro
     int *column_indices = mat->cIndex;
     float *A = mat->val;
     float *x = vec->val;
-    float * y = malloc(sizeof(float)*M);
+    float * y = (float *)malloc(sizeof(float)*M);
     memset(y,0,sizeof(float)*M);
     
     float *calculated_y = product->val;
@@ -101,6 +101,8 @@ int sequentialExecutionCheck( MatrixInfo *mat, MatrixInfo *vec , MatrixInfo *pro
     else {
         printf("\nEverything is within the acceptable tolerance. Good Job");
     }
+    
+    sequential->val = y;
     
     return wrong;
     
