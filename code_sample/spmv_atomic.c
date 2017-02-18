@@ -47,6 +47,9 @@ void getMulAtomic(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
     cudaMalloc((void**)&d_vector, sizeof(float)*N);
     cudaMalloc((void**)&d_result, sizeof(float)*M);
     
+    /* Set all the result values to be zeros */
+    cudaMemset(d_result, 0, sizeof(float)*M);
+    
     /* Copying values from host to device */
     cudaMemcpy(d_rIndices,row_indices,sizeof(int)*number_of_non_zeros, cudaMemcpyHostToDevice);
     cudaMemcpy(d_cIndices,column_indices, sizeof(int)*number_of_non_zeros , cudaMemcpyHostToDevice);
