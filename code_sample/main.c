@@ -102,6 +102,8 @@ int sequentialExecutionCheck( MatrixInfo *mat, MatrixInfo *vec , MatrixInfo *pro
         printf("\nEverything is within the acceptable tolerance. Good Job");
     }
     
+    return wrong;
+    
 }
 
 int main(int argc, char ** argv){
