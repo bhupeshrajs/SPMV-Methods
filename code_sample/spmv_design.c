@@ -3,9 +3,10 @@
 
 /* Put your own kernel(s) here*/
 
+
 void getMulDesign(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int blockSize, int blockNum){
     /*Allocate*/
-
+    
     struct timespec start, end;
     cudaDeviceSynchronize();
     clock_gettime(CLOCK_MONOTONIC_RAW, &start);
