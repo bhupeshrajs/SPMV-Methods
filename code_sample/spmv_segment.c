@@ -98,22 +98,36 @@ __global__ void putProduct_kernel(int nz, int *rIndices, int *cIndices, float *v
             
             __syncthreads();
             
-        }
-    }
-    
-    
-    
-    for( int i = 0 ; i < iteration ; i++ ) {
-        int data_id = thread_id + i* total_number_of_threads;
-        if( data_id < nz ) {
-            int thread_num = threadIdx.x;
+            
+            if( data_id == nz -1 ) {
+                atomicAdd(&result[rows[threadIdx.x]],vals[threadIdx.x]);
+            }
+            else if( threadIdx.x != blockDim.x - 1) {
+                
+                if( rows[threadIdx.x] != rows[threadIdx.x + 1]) {
+                    atomicAdd(&result[rows[threadIdx.x]],vals[threadIdx.x]);
+                }
+            }
+            else {
+                 atomicAdd(&result[rows[threadIdx.x]],vals[threadIdx.x]);
+            }
             
         }
-        
     }
     
     
 }
+
+int compareFunction (const void * a, const void * b)
+{
+    return ( *(cooFormat*)a->row - *(cooFormat*)b->column );
+}
+
+typedef struct cooFormat {
+    int row;
+    int column;
+    float value;
+}cooFormat;
 
 void getMulScan(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int blockSize, int blockNum){
     /*Allocate things...*/
@@ -127,6 +141,24 @@ void getMulScan(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int blockS
     int N = mat->N;
     float *vector = vec->val;
     float *result = res->val;
+    
+    
+    /* Sorting the rows in the order */
+    cooFormat *sorting = (cooFormat*)malloc(sizeof(cooFormat)*number_of_non_zeros);
+    
+    for( int i = 0; i < number_of_non_zeros ; i++ ) {
+        sorting[i]->row = row_indices[i];
+        sorting[i]->column = column_indices[i];
+        sorting[i]->value = values[i];
+    }
+    
+    qsort(sorting,number_of_non_zeros,sizeof(cooFormat),compareFunction);
+    for( int i = 0; i < number_of_non_zeros ; i++ ) {
+        row_indices[i] = sorting[i]->row;
+        column_indices[i] = sorting[i]->column;
+        values[i] = sorting[i]->value;
+    }
+    
     
     printf("\nGPU Code");
     printf("\nBlock Size : %lu, Number of Blocks : %lu, nz : %lu\n",blockSize,blockNum,number_of_non_zeros);
