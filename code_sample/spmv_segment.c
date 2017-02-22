@@ -8,19 +8,19 @@ __device__ float segmentedScan( int lane , int * rows , float *values ) {
     }
     
     if( lane >= 2 && ( rows[threadIdx.x] == rows[threadIdx.x - 2] ) ) {
-        values[threadIdx.x] += values[threadIdx.x - 2]
+        values[threadIdx.x] += values[threadIdx.x - 2];
     }
     
     if( lane >= 4 && ( rows[threadIdx.x] == rows[threadIdx.x - 4] ) ) {
-        values[threadIdx.x] += values[threadIdx.x - 4]
+        values[threadIdx.x] += values[threadIdx.x - 4];
     }
     
     if( lane >= 8 && ( rows[threadIdx.x] == rows[threadIdx.x - 8] ) ) {
-        values[threadIdx.x] += values[threadIdx.x - 8]
+        values[threadIdx.x] += values[threadIdx.x - 8];
     }
     
     if( lane >= 16 && ( rows[threadIdx.x] == rows[threadIdx.x - 16] ) ) {
-        values[threadIdx.x] += values[threadIdx.x - 16]
+        values[threadIdx.x] += values[threadIdx.x - 16];
     }
     
     return values[threadIdx.x];
