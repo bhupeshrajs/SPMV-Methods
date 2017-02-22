@@ -35,8 +35,8 @@ __global__ void putProduct_kernel(int nz, int *rIndices, int *cIndices, float *v
     int iteration = nz % total_number_of_threads ? nz/total_number_of_threads + 1 : nz/total_number_of_threads;
     
     /* Shared Memory for the rows and vals that belong to the block */
-    __shared__ int rows[blockDim.x];
-    __shared__ float vals[blockDim.x];
+    __shared__ int rows[1024];
+    __shared__ float vals[1024];
     
     int warpId = threadIdx.x >> 5;
     int warpFirst = warpId << 5;
