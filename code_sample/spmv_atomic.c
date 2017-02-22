@@ -51,16 +51,16 @@ void getMulAtomic(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
     cooFormat *sorting = (cooFormat*)malloc(sizeof(cooFormat)*number_of_non_zeros);
     
     for( int i = 0; i < number_of_non_zeros ; i++ ) {
-        sorting[i]->row = row_indices[i];
-        sorting[i]->column = column_indices[i];
-        sorting[i]->value = values[i];
+        sorting[i].row = row_indices[i];
+        sorting[i].column = column_indices[i];
+        sorting[i].value = values[i];
     }
     
     qsort(sorting,number_of_non_zeros,sizeof(cooFormat),compareFunction);
     for( int i = 0; i < number_of_non_zeros ; i++ ) {
-        row_indices[i] = sorting[i]->row;
-        column_indices[i] = sorting[i]->column;
-        values[i] = sorting[i]->value;
+        row_indices[i] = sorting[i].row;
+        column_indices[i] = sorting[i].column;
+        values[i] = sorting[i].value;
     }
 
     
