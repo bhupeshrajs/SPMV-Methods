@@ -91,7 +91,7 @@ int sequentialExecutionCheck( MatrixInfo *mat, MatrixInfo *vec , MatrixInfo *pro
     for( int i = 0 ; i < M ; i++ ) {
         if( abs(y[i]-calculated_y[i]) >= 0.01 ) {
             wrong += 1;
-            //printf("\nThe calculated value %f, the actual value %f ",calculated_y[i],y[i]);
+            printf("\nThe calculated value %f, the actual value %f ",calculated_y[i],y[i]);
         }
     }
     

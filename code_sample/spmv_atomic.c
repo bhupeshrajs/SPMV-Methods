@@ -20,20 +20,6 @@ __global__ void getMulAtomic_kernel(int nz, int *rIndices, int *cIndices, float 
 }
 
 
-typedef struct cooFormat {
-    int row;
-    int column;
-    float value;
-}cooFormat;
-
-int compareFunction (const void * a, const void * b)
-{
-    int l = ((cooFormat*)a)->row;
-    int r = ((cooFormat*)b)->row;
-    return (l-r);
-}
-
-
 void getMulAtomic(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int blockSize, int blockNum){
     /*Allocate here...*/
 
@@ -46,23 +32,6 @@ void getMulAtomic(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
     int N = mat->N;
     float *vector = vec->val;
     float *result = res->val;
-    
-    /* Sorting the rows in the order */
-    cooFormat *sorting = (cooFormat*)malloc(sizeof(cooFormat)*number_of_non_zeros);
-    
-    for( int i = 0; i < number_of_non_zeros ; i++ ) {
-        sorting[i].row = row_indices[i];
-        sorting[i].column = column_indices[i];
-        sorting[i].value = values[i];
-    }
-    
-    qsort(sorting,number_of_non_zeros,sizeof(cooFormat),compareFunction);
-    for( int i = 0; i < number_of_non_zeros ; i++ ) {
-        row_indices[i] = sorting[i].row;
-        column_indices[i] = sorting[i].column;
-        values[i] = sorting[i].value;
-    }
-
     
     
     printf("\nGPU Code");
