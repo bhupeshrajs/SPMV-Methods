@@ -19,16 +19,20 @@ __global__ void getMulAtomic_kernel(int nz, int *rIndices, int *cIndices, float 
     }
 }
 
-int compareFunction (const void * a, const void * b)
-{
-    return ( *(cooFormat*)a->row - *(cooFormat*)b->column );
-}
 
 typedef struct cooFormat {
     int row;
     int column;
     float value;
 }cooFormat;
+
+int compareFunction (const void * a, const void * b)
+{
+    int l = (cooFormat*)a->row;
+    int r = (cooFormat*)b->row;
+    return (l-r);
+}
+
 
 void getMulAtomic(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int blockSize, int blockNum){
     /*Allocate here...*/
