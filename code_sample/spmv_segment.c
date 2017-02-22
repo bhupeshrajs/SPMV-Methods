@@ -127,8 +127,8 @@ typedef struct cooFormat {
 
 int compareFunction (const void * a, const void * b)
 {
-    int l = (cooFormat*)a->row;
-    int r = (cooFormat*)b->row;
+    int l = ((cooFormat*)a)->row;
+    int r = ((cooFormat*)b)->row;
     return (l-r);
 }
 
