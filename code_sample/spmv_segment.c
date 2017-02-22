@@ -95,6 +95,7 @@ __global__ void putProduct_kernel(int nz, int *rIndices, int *cIndices, float *v
             __syncthreads();
             
             vals[threadIdx.x] = val;
+            rows[threadIdx.x] = row;
             
             __syncthreads();
             
