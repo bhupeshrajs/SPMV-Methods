@@ -110,6 +110,7 @@ __global__ void putProduct_kernel(int nz, int *rIndices, int *cIndices, float *v
             }
             else {
                  atomicAdd(&result[rows[threadIdx.x]],vals[threadIdx.x]);
+                printf("Atomic Add Performing");
             }
             
         }
