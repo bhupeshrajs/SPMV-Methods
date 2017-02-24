@@ -1,34 +1,7 @@
 #include "genresult.cuh"
 #include <sys/time.h>
 
-/* Put your own kernel(s) here*/
-__device__ float segmentedScan( int lane , int * rows , float *values ) {
-    
-    if( lane >= 1 && ( rows[threadIdx.x] == rows[threadIdx.x - 1] ) ) {
-        values[threadIdx.x] += values[threadIdx.x - 1];
-    }
-    
-    if( lane >= 2 && ( rows[threadIdx.x] == rows[threadIdx.x - 2] ) ) {
-        values[threadIdx.x] += values[threadIdx.x - 2];
-    }
-    
-    if( lane >= 4 && ( rows[threadIdx.x] == rows[threadIdx.x - 4] ) ) {
-        values[threadIdx.x] += values[threadIdx.x - 4];
-    }
-    
-    if( lane >= 8 && ( rows[threadIdx.x] == rows[threadIdx.x - 8] ) ) {
-        values[threadIdx.x] += values[threadIdx.x - 8];
-    }
-    
-    if( lane >= 16 && ( rows[threadIdx.x] == rows[threadIdx.x - 16] ) ) {
-        values[threadIdx.x] += values[threadIdx.x - 16];
-    }
-    
-    return values[threadIdx.x];
-    
-}
-
-__global__ void workLoad32Size(int nz, int offset,  int *rIndices, int *cIndices, float *values, int M, int N, float *vector, float *result ) {
+__global__ void workLoad32Size(int nz ,  int *rIndices, int *cIndices, float *values, int M, int N, float *vector, float *result ) {
     
     int thread_id = threadIdx.x + (blockIdx.x *blockDim.x);
     int total_number_of_threads = blockDim.x * gridDim.x;
@@ -41,8 +14,6 @@ __global__ void workLoad32Size(int nz, int offset,  int *rIndices, int *cIndices
     int warpId = threadIdx.x >> 5;
     int warpFirst = warpId << 5;
     int warpLast = warpFirst + 31;
-    
-    int warpOpen = 0;
     
     
     for( int i = 0 ; i < iteration ; i++ ) {
