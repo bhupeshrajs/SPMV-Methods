@@ -130,43 +130,43 @@ void getMulDesign(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
 
     rowInfo *rowInformation = (rowInfo*)malloc(sizeof(rowInfo)*M);
     for( int i = 0 ; i < M; i++ ) {
-        rowInformation[i]->rowId = i;
-        rowInformation[i]->start = -1;
-        rowInformation[i]->end = -1;
-        rowInformation[i]->nz = 0;
+        rowInformation[i].rowId = i;
+        rowInformation[i].start = -1;
+        rowInformation[i].end = -1;
+        rowInformation[i].nz = 0;
     }
     
     for( int i = 0 ; i < number_of_non_zeros ; i++ ) {
         
         int row = row_indices[i];
         
-        if( rowInformation[row]->nz == 0 ) {
-            rowInformation[row]->start = i;
+        if( rowInformation[row].nz == 0 ) {
+            rowInformation[row].start = i;
         }
         
         if( i < number_of_non_zeros - 1) {
             if( row != row_indices[i+1])
-                rowInformation[row]->end = i;
+                rowInformation[row].end = i;
         }
         
         if( i == number_of_non_zeros - 1) {
-            rowInformation[row]->end = i;
+            rowInformation[row].end = i;
         }
         
-        rowInformation[row]->nz++;
+        rowInformation[row].nz++;
         
     }
     
     int currentPosition = 0;
     for( int offset = 32 ; offset > 0 ; offset >>= 1) {
         for( int i = 0 ; i < M ; i++ ) {
-            int currentNonZeros = rowInformation[i]->nz;
+            int currentNonZeros = rowInformation[i].nz;
             int number_of_sets;
             
             if( currentNonZeros / offset > 0 ) {
                 
                 number_of_sets = currentNonZeros/offset;
-                int start = rowInformation[row]->start;
+                int start = rowInformation[row].start;
                 int noElements = number_of_sets*offset;
                 for( int j = 0 ; j < noElements ; j++ ) {
                     sorting[currentPosition].row = row_indices[start+j];
@@ -174,8 +174,8 @@ void getMulDesign(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
                     sorting[currentPosition].value = values[start+j];
                     currentPosition++;
                 }
-                rowInformation[i]->start = start + noElements;
-                rowInformation[i]->nz = rowInformation[i]->nz % 32;
+                rowInformation[i].start = start + noElements;
+                rowInformation[i].nz = rowInformation[i].nz % 32;
                 
             }
         }
