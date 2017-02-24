@@ -114,9 +114,6 @@ __global__ void workLoad16Size(int nz, int offset,  int *rIndices, int *cIndices
     __shared__ int rows[1024];
     __shared__ float vals[1024];
     
-    int warpId = threadIdx.x >> 5;
-    int warpFirst = warpId << 5;
-    int warpLast = warpFirst + 31;
     for( int i = 0 ; i < iteration ; i++ ) {
         int data_id = thread_id + i* total_number_of_threads + offset;
         if( data_id < nz ) {
@@ -147,9 +144,6 @@ __global__ void workLoad8Size(int nz, int offset,  int *rIndices, int *cIndices,
     __shared__ int rows[1024];
     __shared__ float vals[1024];
     
-    int warpId = threadIdx.x >> 5;
-    int warpFirst = warpId << 5;
-    int warpLast = warpFirst + 31;
     for( int i = 0 ; i < iteration ; i++ ) {
         int data_id = thread_id + i* total_number_of_threads + offset;
         if( data_id < nz ) {
@@ -180,9 +174,6 @@ __global__ void workLoad4Size(int nz, int offset,  int *rIndices, int *cIndices,
     __shared__ int rows[1024];
     __shared__ float vals[1024];
     
-    int warpId = threadIdx.x >> 5;
-    int warpFirst = warpId << 5;
-    int warpLast = warpFirst + 31;
     for( int i = 0 ; i < iteration ; i++ ) {
         int data_id = thread_id + i* total_number_of_threads + offset;
         if( data_id < nz ) {
@@ -213,9 +204,6 @@ __global__ void workLoad2Size(int nz, int offset,  int *rIndices, int *cIndices,
     __shared__ int rows[1024];
     __shared__ float vals[1024];
     
-    int warpId = threadIdx.x >> 5;
-    int warpFirst = warpId << 5;
-    int warpLast = warpFirst + 31;
     for( int i = 0 ; i < iteration ; i++ ) {
         int data_id = thread_id + i* total_number_of_threads + offset;
         if( data_id < nz ) {
@@ -243,9 +231,6 @@ __global__ void workLoad1Size(int nz, int offset,  int *rIndices, int *cIndices,
     int total_number_of_threads = blockDim.x * gridDim.x;
     int iteration = nz % total_number_of_threads ? nz/total_number_of_threads + 1 : nz/total_number_of_threads;
     
-    int warpId = threadIdx.x >> 5;
-    int warpFirst = warpId << 5;
-    int warpLast = warpFirst + 31;
     for( int i = 0 ; i < iteration ; i++ ) {
         int data_id = thread_id + i* total_number_of_threads + offset;
         if( data_id < nz ) {
