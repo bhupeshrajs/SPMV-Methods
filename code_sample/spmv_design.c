@@ -137,7 +137,7 @@ void getMulDesign(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
             if( currentNonZeros / offset > 0 ) {
                 
                 number_of_sets = currentNonZeros/offset;
-                int start = rowInformation[row].start;
+                int start = rowInformation[i].start;
                 int noElements = number_of_sets*offset;
                 for( int j = 0 ; j < noElements ; j++ ) {
                     sorting[currentPosition].row = row_indices[start+j];
@@ -198,7 +198,7 @@ void getMulDesign(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
     
     cudaDeviceSynchronize();
     clock_gettime(CLOCK_MONOTONIC_RAW, &end);
-    printf("Your Own Kernel Time: %lu micro-seconds\n", 1000000 * (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1000);
+    printf("Your Own Kernel Time: %lu micro-seconds\n", 1000 * (end.tv_sec - start.tv_sec) + (end.tv_nsec - start.tv_nsec) / 1000000);
 
     /*Deallocate*/
     cudaMemcpy(result,d_result,sizeof(float)*M, cudaMemcpyDeviceToHost);
