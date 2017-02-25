@@ -80,7 +80,7 @@ void getMulAtomic(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
     activeWarps = numBlocks * blockSize / prop.warpSize;
     maxWarps = prop.maxThreadsPerMultiProcessor / prop.warpSize;
     
-    std::cout << "Occupancy: " << (double)activeWarps / maxWarps * 100 << "%" << std::endl;
+    printf("Occupancy: %f\n",(double)activeWarps / maxWarps * 100);
     
     
     printf("\nGPU Code");
