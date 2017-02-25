@@ -129,7 +129,7 @@ void getMulDesign(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
         rowInformation[row].nz++;
         
     }
-    
+    /*
     int currentPosition = 0;
     int offset = 32;
     for( int k = 0 ; k < 6 ; k++) {
@@ -161,7 +161,7 @@ void getMulDesign(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
         column_indices[i] = sorting[i].column;
         values[i] = sorting[i].value;
     }
-    
+    */
     
     printf("\nGPU Code");
     printf("\nBlock Size : %lu, Number of Blocks : %lu, nz : %lu\n",blockSize,blockNum,number_of_non_zeros);
