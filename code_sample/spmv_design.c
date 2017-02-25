@@ -107,6 +107,8 @@ void getMulDesign(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
         rowInformation[i].nz = 0;
     }
     
+    printf("Sorted");
+    
     for( int i = 0 ; i < number_of_non_zeros ; i++ ) {
         
         int row = row_indices[i];
