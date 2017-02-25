@@ -129,7 +129,9 @@ void getMulDesign(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
     }
     
     int currentPosition = 0;
-    for( int offset = 32 ; offset > 0 ; offset >>= 1) {
+    int offset = 32;
+    for( int k = 0 ; k < 6 ; k++) {
+        offset = offset/2;
         for( int i = 0 ; i < M ; i++ ) {
             int currentNonZeros = rowInformation[i].nz;
             int number_of_sets;
