@@ -62,26 +62,6 @@ void getMulAtomic(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
         column_indices[i] = sorting[i].column;
         values[i] = sorting[i].value;
     }
-
-    int device;
-    cudaDeviceProp prop;
-    int activeWarps;
-    int maxWarps;
-    
-    cudaGetDevice(&device);
-    cudaGetDeviceProperties(&prop, device);
-    
-    cudaOccupancyMaxActiveBlocksPerMultiprocessor(
-                                                  &blockNum,
-                                                  getMulAtomic_kernel,
-                                                  blockSize,
-                                                  0);
-    
-    activeWarps = blockNum * blockSize / prop.warpSize;
-    maxWarps = prop.maxThreadsPerMultiProcessor / prop.warpSize;
-    
-    printf("Occupancy: %f\n",(double)activeWarps / maxWarps * 100);
-    
     
     printf("\nGPU Code");
     printf("\nBlock Size : %lu, Number of Blocks : %lu, nz : %lu\n",blockSize,blockNum,number_of_non_zeros);
@@ -130,4 +110,29 @@ void getMulAtomic(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
     cudaFree(d_values);
     cudaFree(d_vector);
     cudaFree(d_result);
+
+
+    /* Occupancy Calculator */
+    
+    int device;
+    cudaDeviceProp prop;
+    int activeWarps;
+    int maxWarps;
+    
+    cudaGetDevice(&device);
+    cudaGetDeviceProperties(&prop, device);
+    
+    cudaOccupancyMaxActiveBlocksPerMultiprocessor(
+                                                  &blockNum,
+                                                  getMulAtomic_kernel,
+                                                  blockSize,
+                                                  0);
+    
+    activeWarps = blockNum * blockSize / prop.warpSize;
+    maxWarps = prop.maxThreadsPerMultiProcessor / prop.warpSize;
+    
+    printf("Occupancy: %f\n",(double)activeWarps / maxWarps * 100);
+    printf("Max blocks used by the kernel %d\n",blockNum);
+
+
 }
