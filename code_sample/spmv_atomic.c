@@ -72,12 +72,12 @@ void getMulAtomic(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
     cudaGetDeviceProperties(&prop, device);
     
     cudaOccupancyMaxActiveBlocksPerMultiprocessor(
-                                                  &numBlocks,
+                                                  &blockNum,
                                                   getMulAtomic_kernel,
                                                   blockSize,
                                                   0);
     
-    activeWarps = numBlocks * blockSize / prop.warpSize;
+    activeWarps = blockNum * blockSize / prop.warpSize;
     maxWarps = prop.maxThreadsPerMultiProcessor / prop.warpSize;
     
     printf("Occupancy: %f\n",(double)activeWarps / maxWarps * 100);
