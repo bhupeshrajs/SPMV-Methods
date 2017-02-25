@@ -63,6 +63,25 @@ void getMulAtomic(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int bloc
         values[i] = sorting[i].value;
     }
 
+    int device;
+    cudaDeviceProp prop;
+    int activeWarps;
+    int maxWarps;
+    
+    cudaGetDevice(&device);
+    cudaGetDeviceProperties(&prop, device);
+    
+    cudaOccupancyMaxActiveBlocksPerMultiprocessor(
+                                                  &numBlocks,
+                                                  getMulAtomic_kernel,
+                                                  blockSize,
+                                                  0);
+    
+    activeWarps = numBlocks * blockSize / prop.warpSize;
+    maxWarps = prop.maxThreadsPerMultiProcessor / prop.warpSize;
+    
+    std::cout << "Occupancy: " << (double)activeWarps / maxWarps * 100 << "%" << std::endl;
+    
     
     printf("\nGPU Code");
     printf("\nBlock Size : %lu, Number of Blocks : %lu, nz : %lu\n",blockSize,blockNum,number_of_non_zeros);
