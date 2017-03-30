@@ -182,7 +182,7 @@ void getMulScan(MatrixInfo * mat, MatrixInfo * vec, MatrixInfo * res, int blockS
     clock_gettime(CLOCK_MONOTONIC_RAW, &start);
     /*Invoke kernel(s)*/
 
-     putProduct_kernel<<<blockSize,blockNum>>>(number_of_non_zeros,d_rIndices,d_cIndices,d_values,M,N,d_vector,d_result);
+     putProduct_kernel<<<blockNum,blockSize>>>(number_of_non_zeros,d_rIndices,d_cIndices,d_values,M,N,d_vector,d_result);
     
     cudaDeviceSynchronize();
     clock_gettime(CLOCK_MONOTONIC_RAW, &end);
